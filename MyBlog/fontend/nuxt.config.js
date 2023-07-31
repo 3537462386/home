@@ -35,6 +35,9 @@ export default {
   modules: [
     '@unocss/nuxt','@nuxtjs/axios'
   ],
+  axios: {
+    baseURL: 'http://localhost:3000',
+  },
   server: {
     port: 8000,
     host: '127.0.0.1'

@@ -22,36 +22,41 @@
     </div>
 
     <template v-if="initData.posts.length > 0">
-      <div class="relative  w-screen sm:px-1/7">
-        <div class="flex flex-col items-center w-full my-8vh ">
-          <div class="box w-full my-8vh flex flex-col items-center md:h-60vh md:even:flex-row-reverse md:flex-row " v-for="item in initData.posts" :key="item._id">
+      <div class="content relative  w-screen sm:px-1/8" :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
+        <div class="flex flex-col items-center w-full ">
+          <div class="box w-full  my-7vh flex flex-col items-center  md:even:flex-row-reverse md:flex-row "
+            v-for="item in initData.posts" :key="item._id">
             <div class="imgbox md:w-3/5 ">
-              <img src="/image/other/default.jpg" class="w-full h-full rounded-2 hover:opacity-75 cursor-pointer">
+              <img src="/image/other/default.jpg" class="w-full  rounded-2 hover:opacity-75 cursor-pointer">
             </div>
-            <div class="textbox w-full h-full flex flex-col justify-center px-10 md:w-2/5 my-5 md:border-1 md:border-gray-200 md:border-solid rounded-r-2">
-              <div class="time my-3 opacity-60 text-2">{{item.createdAt.split('T')[0]}}</div>
-              <div class="title my-3 text-6 cursor-pointer hover:underline" >{{item.title}}</div> 
-              <div class="content my-3 opacity-60">{{item.content}}</div>
-              <div class="action opacity-60">{{item.views}}</div>
+            <div
+              class="textbox h-55vh flex flex-col flex-grow justify-center px-10 md:w-2/5  md:border-1 md:border-gray-200 md:border-solid rounded-r-2">
+              <div class="time my-3 opacity-60 text-2">{{ item.createdAt.split('T')[0] }}</div>
+              <div class="title my-3 text-6 cursor-pointer hover:underline">{{ item.title }}</div>
+              <div class="content my-3 opacity-60">{{ item.content }}</div>
+              <div class="action opacity-60">{{ item.views }}</div>
             </div>
           </div>
         </div>
       </div>
       <div class="more">
-          <!-- <LoadMore /> -->
+        <!-- <LoadMore /> -->
       </div>
     </template>
     <template v-else>
-			<div class="py-30vh text-center">主人太懒了，还没发表任何文章！！</div>
-		</template>
+      <div class="py-30vh text-center">主人太懒了，还没发表任何文章！！</div>
+    </template>
+    <Actions />
+
   </div>
 </template>
 
 <script>
+import Actions from '@/components/Actions.vue'
 export default ({
   name: 'index',
   components: {
-    // Menu,
+    Actions
   },
   data() {
     return {
@@ -61,7 +66,7 @@ export default ({
         },
         currentTime: '',
         bg: '',
-        posts:[]
+        posts: []
       }
     }
   },
@@ -70,6 +75,9 @@ export default ({
   },
   mounted() {
     this.getInitData()
+    if(window.device.mobile()){
+      this.$store.commit('setMobile')
+    }
   },
   methods: {
     async getInitData() {
@@ -80,7 +88,7 @@ export default ({
       let randomInt = Math.floor(Math.random() * 11) + 1;
       this.initData.bg = `/image/bg/${randomInt}.jpg`;
       try {
-        const result =await this.$axios.$post('http://localhost:3000/getAll');
+        const result = await this.$axios.$post('http://localhost:3000/getAll');
         this.initData.posts = result.data
         console.log(result)
         const data = await this.$axios.$get(
@@ -105,5 +113,13 @@ export default ({
 })
 </script>
 <style scoped>
+.light-theme {
 
+}
+
+.dark-theme {
+  /* 在这里编写黑夜主题相关的样式 */
+  background-color: black;
+  color: white;
+}
 </style>

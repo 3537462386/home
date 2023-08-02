@@ -1,9 +1,8 @@
 <template>
-    <div class="mybutton" :class="{ 'show': showButton }">
+    <div class="mybutton z-200" :class="{ 'show': showButton }">
         <img src="/image/action/dark.svg" v-show="$store.state.theme" @click="changeTheme" class="w-8 h-8">
         <img src="/image/action/sun.svg" v-show="!$store.state.theme" @click="changeTheme" class="w-8 h-8">
         <img src="/image/action/totop.svg" @click="backToTop" class="w-9 h-9">
-        <img src="/image/action/actions.png" class="bg-blue w-8 h-8 p-1 rounded-1" />
     </div>
 </template>
   
@@ -33,6 +32,7 @@ export default {
         changeTheme() {
             this.$store.commit('setTheme')
         }
+        
     }
 }
 </script>

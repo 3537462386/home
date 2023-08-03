@@ -33,7 +33,7 @@
               <img src="/image/other/default.jpg" class="w-full  rounded-2 hover:opacity-75 cursor-pointer">
             </div>
             <div
-              class="textbox h-55vh flex flex-col justify-center px-10 md:w-2/5  md:border-1 md:border-gray-200 md:border-solid rounded-r-2">
+              class="textbox h-55vh flex flex-col justify-center px-10 md:w-2/5  md:border-1 md:border-gray-200 md:border-solid rounded-2">
               <div class="time my-3 opacity-60 text-2">{{ item.createdAt.split('T')[0] }}</div>
               <div class="title my-3 text-6 cursor-pointer hover:underline">{{ item.title }}</div>
               <div class="content my-3 opacity-60">{{ item.content }}</div>
@@ -99,8 +99,10 @@ export default ({
       let randomInt = Math.floor(Math.random() * 11) + 1;
       this.initData.bg = `/image/bg/${randomInt}.jpg`;
       try {
-        const result = await this.$axios.$post('http://localhost:3000/getAll');
-        this.initData.posts = result.data
+        // const result = await this.$axios.$post('http://localhost:3000/getAll');
+        const result = await this.$axios.$get('../store/Blog.post.json');
+        // this.initData.posts = result.data
+        this.initData.posts = result
         console.log(result)
         const data = await this.$axios.$get(
           'https://v1.hitokoto.cn?c=a&c=c&c=h&c=i'

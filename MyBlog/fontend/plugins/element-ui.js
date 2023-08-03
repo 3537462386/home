@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Element from 'element-ui'
-import locale from 'element-ui/lib/locale/lang/en'
-import Icon from 'element-ui'
-Vue.use(Element, { locale },Icon)
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+Vue.use(ElementUI)

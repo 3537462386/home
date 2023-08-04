@@ -20,6 +20,11 @@ mongoose
   });
 app.use(bodyParser())
 
+app.use(bodyParser({
+  jsonLimit: '10mb',
+  formLimit: '10mb'
+}))
+
 app.use(cors({
   origin: '*',
 }));

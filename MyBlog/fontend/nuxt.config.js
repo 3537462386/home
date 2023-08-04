@@ -37,10 +37,10 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@unocss/nuxt','@nuxtjs/axios'
+    '@unocss/nuxt','@nuxtjs/axios','@nuxtjs/composition-api/module',
   ],
   axios: {
-    baseURL: 'http://localhost:3000',
+    
   },
   server: {
     port: 8000,

@@ -1,30 +1,50 @@
 <template>
-    <div class="container w-screen flex flex-col items-center my-10vh mx-10vw">
+    <div class="container w-screen flex flex-col items-center my-10vh md:mx-10vw">
         <el-timeline w-full h-full>
-            <el-timeline-item timestamp="2018/4/12" placement="top" size="large">
+            <el-timeline-item :timestamp="item.createdAt.split('T')[0]" placement="top" size="large" v-for="item in post"
+                :key="item._id">
                 <el-card>
-                    <h4>更新 Github 模板</h4>
-                    <p>王小虎 提交于 2018/4/12 20:46</p>
-                </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/3" placement="top" size="large">
-                <el-card>
-                    <h4>更新 Github 模板</h4>
-                    <p>王小虎 提交于 2018/4/3 20:46</p>
-                </el-card>
-            </el-timeline-item>
-            <el-timeline-item timestamp="2018/4/2" placement="top" size="large">
-                <el-card>
-                    <h4>更新 Github 模板</h4>
-                    <p>王小虎 提交于 2018/4/2 20:46</p>
+                    <div class="flex justify-center items-center">
+                        <img :src="item.imgs" class="w-13 h-11 rounded">
+                        <div class="flex flex-col mx-4 ">
+                            <h4 class="mb-2">{{ item.title }}</h4>
+                            <div class="opacity-50" style="color: rgb(31, 86, 159);">{{ `${item.likes} Like / ${item.views} Read` }}</div>
+                        </div>
+
+                    </div>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
     </div>
 </template>
 
-<script setup>
+<script>
+export default ({
+    components: {
+    },
+    data() {
+        return {
+            post: []
+        }
+    },
+    head() {
 
+    },
+    mounted() {
+        this.getPost()
+    },
+    methods: {
+        async getPost() {
+            try {
+                const result = await this.$axios.$post('http://localhost:3000/getAll');
+                console.log(result.data)
+                this.post = result.data
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+})
 </script>
 
 <style lang="scss" scoped></style>

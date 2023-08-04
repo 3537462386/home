@@ -1,8 +1,8 @@
 <template>
     <div class="mybutton z-200" :class="{ 'show': showButton }">
-        <img src="/image/action/dark.svg" v-show="$store.state.theme" @click="changeTheme" class="w-8 h-8">
-        <img src="/image/action/sun.svg" v-show="!$store.state.theme" @click="changeTheme" class="w-8 h-8">
-        <img src="/image/action/totop.svg" @click="backToTop" class="w-9 h-9">
+        <img src="/image/button/dark.svg" v-show="$store.state.theme" @click="changeTheme" class="w-8 h-8">
+        <img src="/image/button/sun.svg" v-show="!$store.state.theme" @click="changeTheme" class="w-8 h-8">
+        <img src="/image/button/totop.svg" @click="backToTop" class="w-9 h-9">
     </div>
 </template>
   

@@ -27,14 +27,41 @@ const getAll  = async (ctx, next) => {
   }
 }
 
+// 得到某一篇
+const getOne  = async (ctx, next) => {
+  let { _id } = ctx.request.body
+  try {
+    const result = await Post_col.findOne({_id:_id})
+    if (result) {
+      ctx.body = {
+        code: 1,  
+        msg: '查询成功',
+        data: result
+      }
+    }else{
+      ctx.body = {
+        code: -1,  
+        msg: '查询失败',
+        data: result
+      }
+    }
+  } catch (err) {
+    ctx.body = {
+      code: -1,  
+      msg: '查询失败',
+      data: err
+    }
+  }
+}
+
 // 增加 
 
 const addPost = async (ctx, next) => {
-  let account = ctx.request.body
-  console.log(account)
+  
   let addAccount = {
     title: account.title,
     content: account.content,
+    sketch: account.sketch,
     imgs: account.imgs
   }
   try {
@@ -84,6 +111,6 @@ const addPost = async (ctx, next) => {
 
 module.exports = {
   getAll,
-  addPost
-  // likePost
+  addPost,
+  getOne
 }

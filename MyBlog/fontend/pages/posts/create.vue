@@ -29,6 +29,7 @@
   
 <script setup>
 import { reactive, onMounted, ref } from 'vue'
+import axios from 'axios'
 const state = reactive({
   Form: {
     title: '',

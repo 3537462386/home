@@ -20,7 +20,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [ '~/assets/css/normalize.css'
+  css: [ '~/assets/css/normalize.css','~/static/iconfont/iconfont.css'
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

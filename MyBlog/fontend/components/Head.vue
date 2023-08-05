@@ -1,13 +1,27 @@
 <template>
     <div>
-        <div class="w-full myhead z-200 bg-white flex justify-center items-center" :class="{ 'show': showButton }">
-            <audio src="https:\/\/api.wuenci.com\/meting\/api\/?server=netease&type=url&id=1441758494" controls></audio>
+        <div class="w-full myhead z-200 px-5 flex justify-between items-center cursor-pointer"
+            :class="{ 'show': showButton }">
+            <img src="/image/logo/logo.svg" @click="ToHome">
+            <audio :src="randomSong" controls></audio>
+            <img src="/image/actions/about.svg" @click="TOAbout">
         </div>
-        <div class="w-full myfoot z-200 bg-white flex justify-center items-center" :class="{ 'show': !showButton }">
+        <div class="w-full myfoot z-200 px-5 flex justify-around items-center cursor-pointer"
+            :class="{ 'show': !showButton }">
             <div class="lrc">
                 <ul>
                     <li v-for="item in lrcData" :key="item.index">{{ item.words }}</li>
                 </ul>
+            </div>
+            <div class="button flex justify-center items-center">
+                <span class="iconfont icon-yanjing"></span>
+                <p>123</p>
+                <span class="iconfont icon-xinxi"></span>
+                <p>123</p>
+                <span class="iconfont icon-aixin"></span>
+                <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme"></span>
+                <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span>
+                <span class="iconfont icon-huidaodingbu" @click="backToTop"></span>
             </div>
         </div>
     </div>
@@ -19,7 +33,9 @@ export default {
         return {
             showButton: true,
             lastScrollPosition: 0,
-            lrcData:[]
+            lrcData: [],
+            randomIndex: 0,
+            randomSong: ''
         }
     },
     mounted() {
@@ -27,10 +43,11 @@ export default {
         this.lastScrollPosition = window.scrollY
         window.addEventListener('scroll', this.handleScroll)
         //得到初始歌数据
+        this.getRandomSong()
         this.getSong()
         //监听歌曲
         document.querySelector('audio').addEventListener('timeupdate',
-        this.setOffset);
+            this.setOffset);
 
     },
     beforeDestroy() {
@@ -55,10 +72,17 @@ export default {
         changeTheme() {
             this.$store.commit('setTheme')
         },
+        // 随机选取首歌曲中的一首
+        getRandomSong() {
+            const songs = [1441758494, 436346833, 1336856864, 567544544, 514761281, 28267530, 64561, 29759733];
+            const randomIndex = Math.floor(Math.random() * songs.length);
+            this.randomIndex = songs[randomIndex];
+            this.randomSong = `https://api.wuenci.com/meting/api/?type=url&id=${this.randomIndex}`;
+        },
         //请求歌数据
         async getSong() {
             try {
-                const data = await this.$axios.$get('https://api.wuenci.com/meting/api/?server=netease&type=lrc&id=1441758494');
+                const data = await this.$axios.$get(`https://api.wuenci.com/meting/api/?server=netease&type=lrc&id=${this.randomIndex}`);
                 this.lrcData = this.parseLrc(data);
                 console.log(this.lrcData)
             } catch (error) {
@@ -107,20 +131,43 @@ export default {
             // 偏移量
             const index = this.findIndex();
             var offset = liHeight * index + liHeight / 2
-            - containerHeight / 2;
-            if(offset < 0) {
+                - containerHeight / 2;
+            if (offset < 0) {
                 offset = 0;
             }
-            if(offset > maxOffset) {
+            if (offset > maxOffset) {
                 offset = maxOffset;
             }
             ul.style.transform = `translateY(-${offset}px)`;
             const li = ul.children[index];
-            if(li) {
+            if (li) {
                 li.classList.add('active');
             }
+        },
+        ToHome() {
+            this.$router.push("/");
+        },
+        TOAbout() {
+            this.$router.push("/about");
+        },
+        backToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+        },
+        changeTheme() {
+            // var myhead = document.getElementsByClassName('myhead');
+            // var myfoot = document.getElementsByClassName('myfoot');  
+            // if (this.$store.state.theme) {
+            //     myhead.style.backgroundColor  = '#f1f1f1';
+            //     myfoot.style.backgroundColor  = '#f1f1f1';
+            // } else {
+            //     myhead.style.backgroundColor  = '#716666';
+            //     myfoot.style.backgroundColor  = '#716666';
+            // }
+            this.$store.commit('setTheme')
         }
-
     }
 }
 </script>
@@ -128,15 +175,17 @@ export default {
 <style>
 .myhead {
     margin: 0;
-    padding: 0;
     position: fixed;
     top: 0;
     right: 0;
     height: 0;
     transition: all 0.5s ease-in-out;
     overflow: hidden;
-    border-bottom: 1px solid #ccc;  /* 设置上边框 */
-    box-shadow: inset 0px -1px 2px rgba(0, 0, 0, 0.3); /* 添加内阴影 */
+    border-bottom: 1px solid #ccc;
+    /* 设置上边框 */
+    box-shadow: inset 0px -1px 1px rgba(0, 0, 0, 0.1);
+    /* 添加内阴影 */
+    background-color: #f1f1f1;
 }
 
 .myfoot {
@@ -148,8 +197,11 @@ export default {
     height: 0;
     transition: all 0.5s ease-in-out;
     overflow: hidden;
-    border-top: 1px solid #ccc;  /* 设置上边框 */
-    box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.3); /* 添加内阴影 */
+    border-top: 1px solid #ccc;
+    /* 设置上边框 */
+    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1);
+    /* 添加内阴影 */
+    background-color: #f1f1f1;
 }
 
 .myhead.show {
@@ -164,6 +216,12 @@ export default {
 audio {
     width: 350px;
     height: 35px;
+    background-color: #f1f1f1;
+}
+
+.myhead img {
+    height: 35px;
+    width: 35px;
 }
 
 .lrc {
@@ -176,15 +234,31 @@ audio {
 .lrc ul {
     transition: 0.6s;
     list-style: none;
+    overflow: hidden;
 }
 
 .lrc li {
     height: 35px;
     line-height: 35px;
+    overflow: hidden;
 }
 
 .lrc li.active {
     color: #000000;
     transform: scale(1.2);
     transition: 0.2s;
+}
+
+.button span {
+    font-size: 20px;
+    margin-left: 10px;
+    color: #716666;
+}
+
+.button span:hover {
+    color: rgb(0, 0, 255);
+}
+
+.button p {
+    font-size: 5px;
 }</style>

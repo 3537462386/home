@@ -16,6 +16,11 @@
         <textarea id="content" v-model="state.Form.content"
           class="block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 mt-1" rows="8" required></textarea>
       </div>
+      <!-- <div>
+        <label for="imgs" class="font-medium">图片</label>
+        <textarea id="imgs" v-model="state.Form.imgs"
+          class="block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 mt-1" rows="8" required></textarea>
+      </div> -->
       <div>
         <input type="file" @change="handleFileSelect" accept="image/*">
         <img :src="state.Form.imgs" v-if="state.Form.imgs" class="w-20 h-20">

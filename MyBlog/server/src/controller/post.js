@@ -57,7 +57,7 @@ const getOne  = async (ctx, next) => {
 // 增加 
 
 const addPost = async (ctx, next) => {
-  
+  let account = ctx.request.body
   let addAccount = {
     title: account.title,
     content: account.content,

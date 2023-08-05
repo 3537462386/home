@@ -1,7 +1,7 @@
 <template>
-  <div class="w-screen ">
+  <div class="w-screen " :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
     <Head />
-    <div class="post p-10 flex flex-col justify-center items-center w-full md:px-10vw lg:px-22vw ">
+    <div class="post p-10 flex flex-col justify-center items-center w-full md:px-10vw lg:px-22vw" >
       <h1>{{ post.title }}</h1>
       <!-- <pre>{{ state.post.content }}</pre> -->
       <p class="" style="white-space:pre-wrap;line-height: 2;">{{ post.content }}</p>
@@ -43,4 +43,12 @@ export default ({
   }
 })
 </script>
-<style scoped></style>
+<style scoped>
+.light-theme {}
+
+.dark-theme {
+  /* 在这里编写黑夜主题相关的样式 */
+  background-color: black;
+  color: white;
+}
+</style>

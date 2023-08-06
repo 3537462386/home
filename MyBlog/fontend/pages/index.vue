@@ -51,7 +51,7 @@
     <template v-else>
       <div class="py-30vh text-center">主人太懒了，还没发表任何文章！！</div>
     </template>
-    <Actions />
+    <Actions/>
     <modal :visible="initData.modalVisible" />
     <div id="rocket" class="z-100 pointer-events-none" >
       <img src="/image/rocket.svg" class="w-full h-full" style="pointer-events: none;">

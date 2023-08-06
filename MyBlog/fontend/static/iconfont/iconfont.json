@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "24634688",
+      "name": "icon-红叉",
+      "font_class": "icon-hongcha",
+      "unicode": "e780",
+      "unicode_decimal": 59264
+    },
+    {
+      "icon_id": "5651349",
+      "name": "爱心",
+      "font_class": "aixin1",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
       "icon_id": "630126",
       "name": "眼睛",
       "font_class": "yanjing",

@@ -1,8 +1,8 @@
 <template>
     <div class="mybutton z-200" :class="{ 'show': showButton }">
-        <img src="/image/button/dark.svg" v-show="$store.state.theme" @click="changeTheme" class="w-8 h-8">
-        <img src="/image/button/sun.svg" v-show="!$store.state.theme" @click="changeTheme" class="w-8 h-8">
-        <img src="/image/button/totop.svg" @click="backToTop" class="w-9 h-9">
+        <!-- <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme" :class="$store.state.theme ? 'active':''"></span>
+        <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span> -->
+        <span class="iconfont icon-huidaodingbu" @click="backToTop"></span>
     </div>
 </template>
   
@@ -51,4 +51,12 @@ export default {
     opacity: 1;
 }
 
+.mybutton span {
+    font-size: 30px;
+    margin-left: 5px;
+    color:black;
+}
+.active {
+    color:white;
+}
 </style>

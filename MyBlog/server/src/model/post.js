@@ -12,7 +12,7 @@ const PostSchema = new mongoose.Schema({
 	content: { type: String, required: true },
 	sketch: { type: String, required: true },
 	imgs: { type: String ,required: true  },
-	comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'comment' }],
+	comments: [{  type: String  }],
 	likes: { type: Number, default: 0 },
 	createdAt: { type: Date, default: Date.now },
 	views: { type: Number, default: 0}

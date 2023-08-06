@@ -88,29 +88,56 @@ const addPost = async (ctx, next) => {
   }
 }
 
+// 增加游览量
 
-// // 点赞取消贴子
-// const likePost  = async (ctx, next) => {
-//   let account = ctx.request.body
+const addViews = async (ctx, next) => {
+  let { _id } = ctx.request.body
+  try {
+    const result = await Post_col.findOneAndUpdate({ _id:_id}, { $inc: { views: 1 } }, { new: true })
+    if (result) {
+      ctx.body = {
+        code: 1,  
+        msg: '成功',
+        data: result
+      }
+    }else{
+      ctx.body = {
+        code: -1,  
+        msg: '失败',
+        data: result
+      }
+    }
+  }catch (err) {
+    ctx.body = {
+      code: -1,  
+      msg: '查询失败',
+      data: err
+    }
+  }
+}
 
-//   try {
-//     const isLiked = await User_col.exists({ _id: account.userId, likes: account.postId })
-//     if(isLiked){
-//       await Post_col.updateOne({ _id: account.postId }, { $inc: { likes: -1 }})
-//       await User_col.updateOne({ _id: account.userId }, { $pull: { likes: account.postId }})
-//     }else{
-//       await Post_col.updateOne({ _id: account.postId }, { $inc: { likes: 1 }})
-//       await User_col.updateOne({ _id: account.userId }, { $push: { likes: account.postId }})
-//     }
-//   } catch (err) {
-//     console.error(err);
-//   }
-// }
+// 点赞取消贴子
+const likePost  = async (ctx, next) => {
+
+  try {
+    let {_id , isLiked } = ctx.request.body
+    if( isLiked === 'unlike'){
+      await Post_col.updateOne({ _id: _id }, { $inc: { likes: -1 }})
+    }else{
+      await Post_col.updateOne({ _id: _id }, { $inc: { likes: 1 }})
+    }
+    console.error(ctx.request.body);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 
 
 module.exports = {
   getAll,
   addPost,
-  getOne
+  getOne,
+  addViews,
+  likePost
 }

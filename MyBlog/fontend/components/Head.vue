@@ -15,12 +15,14 @@
             </div>
             <div class="button flex justify-center items-center">
                 <span class="iconfont icon-yanjing"></span>
-                <p>123</p>
+                <p>{{ $store.state.posts.views }}</p>
                 <span class="iconfont icon-xinxi"></span>
-                <p>123</p>
-                <span class="iconfont icon-aixin"></span>
-                <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme"></span>
-                <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span>
+                <p>{{ $store.state.posts.comments ? $store.state.posts.comments.length : 0 }}</p>
+                <span class="iconfont icon-aixin" v-show="isLiked === 'unlike'" @click="likePost"></span>
+                <span class="iconfont icon-aixin1" style="color: red;" v-show="isLiked === 'like'" @click="likePost"></span>
+                <!-- <p>{{ $store.state.posts.likes }}</p> -->
+                <!-- <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme"></span>
+                <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span> -->
                 <span class="iconfont icon-huidaodingbu" @click="backToTop"></span>
             </div>
         </div>
@@ -35,10 +37,17 @@ export default {
             lastScrollPosition: 0,
             lrcData: [],
             randomIndex: 0,
-            randomSong: ''
+            randomSong: '',
+            isLiked: 'unlike',
+            post: []
         }
     },
     mounted() {
+        var value = localStorage.getItem('isLiked');
+        if (value) {
+            this.isLiked = value
+        }
+        // this.getPost()
         // 头栏和脚栏出现事件监听
         this.lastScrollPosition = window.scrollY
         window.addEventListener('scroll', this.handleScroll)
@@ -54,6 +63,15 @@ export default {
         window.removeEventListener('scroll', this.handleScroll)
     },
     methods: {
+        async getPost() {
+            try {
+                const params = this.$route.params
+                const result = await this.$axios.$post('http://localhost:3000/getOne', { _id: params.id });
+                this.post = result.data
+            } catch (error) {
+                console.error(error);
+            }
+        },
         handleScroll() {
             const currentScrollPosition = window.scrollY
             if (currentScrollPosition > this.lastScrollPosition && this.showButton === true) {
@@ -150,12 +168,6 @@ export default {
         TOAbout() {
             this.$router.push("/about");
         },
-        backToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            })
-        },
         changeTheme() {
             // var myhead = document.getElementsByClassName('myhead');
             // var myfoot = document.getElementsByClassName('myfoot');  
@@ -167,6 +179,34 @@ export default {
             //     myfoot.style.backgroundColor  = '#716666';
             // }
             this.$store.commit('setTheme')
+        },
+        async likePost() {
+
+            var value = localStorage.getItem('isLiked');
+            if (value) {
+                if (value === 'like') {
+                    localStorage.setItem('isLiked', 'unlike');
+                    this.isLiked = 'unlike'
+                } else {
+                    localStorage.setItem('isLiked', 'like');
+                    this.isLiked = 'like'
+                }
+            } else {
+                localStorage.setItem('isLiked', 'like');
+                this.isLiked = 'like'
+            }
+            try {
+                const params = this.$route.params
+                const isLiked = this.isLiked
+                await this.$axios.$post('http://localhost:3000/likePost', { _id: params.id, isLiked: isLiked });
+                const result = await this.$axios.$post('http://localhost:3000/getOne', { _id: params.id });
+                // this.post = result.data
+                console.log(result.data)
+                this.$store.commit('setPosts',result.data)
+            } catch (err) {
+                console.log(err)
+            }
+
         }
     }
 }
@@ -261,4 +301,5 @@ audio {
 
 .button p {
     font-size: 5px;
-}</style>
+}
+</style>

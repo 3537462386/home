@@ -21,14 +21,6 @@
 <script>
 export default {
     props: {
-        title: {
-            type: String,
-            default: 'Modal Title',
-        },
-        message: {
-            type: String,
-            default: 'Modal Message',
-        },
         visible: {
             type: Boolean,
             default: false,

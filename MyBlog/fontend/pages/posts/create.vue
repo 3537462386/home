@@ -16,15 +16,15 @@
         <textarea id="content" v-model="state.Form.content"
           class="block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 mt-1" rows="8" required></textarea>
       </div>
-      <!-- <div>
-        <label for="imgs" class="font-medium">图片</label>
-        <textarea id="imgs" v-model="state.Form.imgs"
-          class="block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 mt-1" rows="8" required></textarea>
-      </div> -->
       <div>
+        <label for="imgs" class="font-medium">图片</label>
+        <input type="text" id="imgs" v-model="state.Form.imgs"
+          class="block w-full border-gray-300 rounded-md shadow-sm py-2 px-3 mt-1" required>
+      </div>
+      <!-- <div>
         <input type="file" @change="handleFileSelect" accept="image/*">
         <img :src="state.Form.imgs" v-if="state.Form.imgs" class="w-20 h-20">
-      </div>
+      </div> -->
       <div class="flex justify-end">
         <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
           @click="submitForm">发布</button>

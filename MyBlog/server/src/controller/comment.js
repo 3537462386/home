@@ -3,20 +3,27 @@ const Post_col = require('../model/post')
 
 // 获取所有
 const getCommentByPost = async (ctx, next) => {
-  const post_data = await Post_col.findById(ctx.request.body.postId)
-  .populate({
-    path: 'comments',
-    model: 'comment',
-    populate: {
-      path: 'replies',
-      model: 'reply',
-    },
-  })
-  if (post_data) {
+  let { _id } = ctx.request.body
+  try {
+    const result = await Comment_col.find({ postId:_id})
+    if (result) {
+      ctx.body = {
+        code: 1,  
+        msg: '查询成功',
+        data: result
+      }
+    }else{
+      ctx.body = {
+        code: -1,  
+        msg: '查询失败',
+        data: result
+      }
+    }
+  } catch (err) {
     ctx.body = {
-      code: 1,
-      msg: '查询成功',
-      data: post_data
+      code: -1,  
+      msg: '查询失败',
+      data: err
     }
   }
 }

@@ -25,7 +25,7 @@
     </div>
 
     <template v-if="initData.posts.length > 0">
-      <div class="content relative my-10 w-screen sm:px-1/8" :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
+      <div class="content relative py-10 w-screen sm:px-1/8" :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
         <div class="flex flex-col items-center w-full ">
           <div
             class="box w-full  my-7vh flex flex-col items-center border-1 rounded-2 border-gray-200 border-solid md:border-none md:even:flex-row-reverse md:flex-row "

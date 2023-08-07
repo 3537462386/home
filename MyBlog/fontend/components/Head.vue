@@ -1,13 +1,19 @@
 <template>
     <div>
-        <div class="w-full myhead z-200 px-5 flex justify-between items-center cursor-pointer"
-            :class="{ 'show': showButton }">
+        <div class="w-full myhead z-200 px-5 flex justify-between items-center cursor-pointer" :class="{
+            'dark-theme': $store.state.theme,
+            'light-theme': !$store.state.theme,
+            'show': showButton
+        }">
             <img src="/image/logo/logo.svg" @click="ToHome">
-            <audio :src="randomSong" controls></audio>
+            <audio :src="randomSong" controls ></audio>
             <img src="/image/actions/about.svg" @click="TOAbout">
         </div>
-        <div class="w-full myfoot z-200 px-5 flex justify-around items-center cursor-pointer"
-            :class="{ 'show': !showButton }">
+        <div class="w-full myfoot z-200 px-5 flex justify-around items-center cursor-pointer" :class="{
+            'dark-theme': $store.state.theme,
+            'light-theme': !$store.state.theme,
+            'show': !showButton
+        }">
             <div class="lrc">
                 <ul>
                     <li v-for="item in lrcData" :key="item.index">{{ item.words }}</li>
@@ -20,9 +26,9 @@
                 <p>{{ $store.state.posts.comments ? $store.state.posts.comments.length : 0 }}</p>
                 <span class="iconfont icon-aixin" v-show="isLiked === 'unlike'" @click="likePost"></span>
                 <span class="iconfont icon-aixin1" style="color: red;" v-show="isLiked === 'like'" @click="likePost"></span>
-                <!-- <p>{{ $store.state.posts.likes }}</p> -->
-                <!-- <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme"></span>
-                <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span> -->
+                <p>{{ $store.state.posts.likes }}</p>
+                <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme"></span>
+                <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span>
                 <span class="iconfont icon-huidaodingbu" @click="backToTop"></span>
             </div>
         </div>
@@ -202,7 +208,7 @@ export default {
                 const result = await this.$axios.$post('http://localhost:3000/getOne', { _id: params.id });
                 // this.post = result.data
                 console.log(result.data)
-                this.$store.commit('setPosts',result.data)
+                this.$store.commit('setPosts', result.data)
             } catch (err) {
                 console.log(err)
             }
@@ -301,5 +307,16 @@ audio {
 
 .button p {
     font-size: 5px;
+}
+
+.light-theme {
+    background-color: white;
+    color: black;
+}
+
+.dark-theme {
+    /* 在这里编写黑夜主题相关的样式 */
+    background-color: black;
+    color: white;
 }
 </style>

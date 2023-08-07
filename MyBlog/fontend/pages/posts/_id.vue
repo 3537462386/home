@@ -1,5 +1,5 @@
 <template>
-  <div class="w-screen">
+  <div class="w-screen" :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
 
     <Head />
     <div class="post px-10 py-30 flex flex-col justify-center items-center w-full md:px-10vw lg:px-22vw">
@@ -10,25 +10,27 @@
         style="border:1px solid rgb(158, 150, 150,0.3);border-radius: 4px;">
         <div class="flex items-center justify-center w-full mx-10 ">
           <input type="text" class="w-1/2 h-8 mr-2 border-none opacity-50  focus:outline-none focus:opacity-100"
-            v-model="comment.name" style="border-bottom:1px dashed  rgb(0, 0, 0);" placeholder="Name">
+            v-model="comment.name" style="border-bottom:1px dashed  rgb(90, 74, 74);" placeholder="Name"
+            :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
           <input type="email" class="w-1/2 h-8 ml-2 border-none opacity-50 focus:outline-none focus:opacity-100"
-            v-model="comment.email" style="border-bottom:1px dashed  rgb(0, 0, 0);" placeholder="Email">
+            v-model="comment.email" style="border-bottom:1px dashed  rgb(80, 69, 69);" placeholder="Email"
+            :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
         </div>
         <div class="w-full mx-10 m-3">
           <textarea type="email" class="w-full p-3 h-40 border-none opacity-50 focus:outline-none focus:opacity-100"
-            style="border:1px dashed  rgb(0, 0, 0);border-radius: 4px;" v-model="comment.content"
-            placeholder="What do you want to say?"></textarea>
+            style="border:1px dashed  rgb(71, 62, 62);border-radius: 4px;" v-model="comment.content"
+            placeholder="What do you want to say?" :class="$store.state.theme ? 'dark-theme' : 'light-theme'"></textarea>
         </div>
         <div class="w-full flex items-center">
-          <el-button size="medium" @click="submitComment" class="mr-4">Submit</el-button>
+          <el-button size="medium" @click="submitComment" class="mr-4" :class="$store.state.theme ? 'dark-theme' : 'light-theme'">Submit</el-button>
           <span class="iconfont icon-icon-hongcha mr-2" style="color: red;font-size:10px" v-show="isRed"></span>
           <div class=" opacity-50 " :class="{ 'textRed': isRed }">{{ inputtext }}</div>
         </div>
       </div>
-      <div class="comments">
-        <p>1313</p>
+      <div class="comments w-full my-10">
+        <p class="">comments&nbsp;({{  $store.state.posts.comments ? $store.state.posts.comments.length : 0 }})</p>
         <ul>
-          <li v-for="item in $store.state.posts.comments" :key="item.index">{{item}}</li>
+          <li v-for="item in comments" :key="item._id" class="m-5">{{ item.name }}:{{item.content}}     {{ item.createdAt.split('T')[0] }}</li>
         </ul>
       </div>
     </div>
@@ -46,6 +48,7 @@ export default ({
   data() {
     return {
       post: [],
+      comments:[],
       comment: {
         name: '',
         email: '',
@@ -70,8 +73,8 @@ export default ({
         const params = this.$route.params
         console.log(params)
         const result = await this.$axios.$post('http://localhost:3000/addViews', { _id: params.id });
-        // console.log(result.data)
-        // this.post = result.data
+        const comments = await this.$axios.$post('http://localhost:3000/getCommentByPost', { _id: params.id });
+        this.comments = comments.data
         this.$store.commit('setPosts',result.data)
       } catch (error) {
         console.error(error);
@@ -94,6 +97,8 @@ export default ({
         const params = this.$route.params
         const result = await this.$axios.$post('http://localhost:3000/addComment', this.comment);
         const posts = await this.$axios.$post('http://localhost:3000/addViews', { _id: params.id });
+        const comments = await this.$axios.$post('http://localhost:3000/getCommentByPost', { _id: params.id });
+        this.comments = comments.data
         // console.log(posts)
         // this.post = posts.data
         this.$store.commit('setPosts',posts.data)
@@ -111,5 +116,15 @@ export default ({
     transition: 0.6s;
     list-style: none;
     overflow: hidden;
+}
+.light-theme  {
+  background-color: white;
+  color: black;
+}
+
+.dark-theme {
+  /* 在这里编写黑夜主题相关的样式 */
+  background-color: black;
+  color: white;
 }
 </style>

@@ -1,8 +1,11 @@
 <template>
     <div class="mybutton z-200" :class="{ 'show': showButton }">
-        <!-- <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme" @click="changeTheme" :class="$store.state.theme ? 'active':''"></span>
-        <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"></span> -->
-        <span class="iconfont icon-huidaodingbu" @click="backToTop"></span>
+        <span class="iconfont icon-taiyangtianqi" v-show="!$store.state.theme"
+         @click="changeTheme" :class="$store.state.theme ? 'active':''"></span>
+        <span class="iconfont icon-yueguang" v-show="$store.state.theme" @click="changeTheme"
+        :class="$store.state.theme ? 'active':''"></span>
+        <span class="iconfont icon-huidaodingbu" @click="backToTop"
+        :class="$store.state.theme ? 'active':''"></span>
     </div>
 </template>
   
@@ -56,7 +59,7 @@ export default {
     margin-left: 5px;
     color:black;
 }
-.active {
+span.active {
     color:white;
 }
 </style>

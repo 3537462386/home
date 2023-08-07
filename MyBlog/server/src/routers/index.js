@@ -9,5 +9,6 @@ router.post('/addPost', post_controller.addPost)
 router.post('/addViews', post_controller.addViews)
 router.post('/likePost', post_controller.likePost)
 router.post('/addComment', comment_controller.addComment)
+router.post('/getCommentByPost', comment_controller.getCommentByPost)
 
 module.exports = router

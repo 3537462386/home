@@ -1,20 +1,16 @@
 <template>
   <div class="container flex-col items-center relative w-screen h-screen">
+    <Loading v-if="isLoading"/>
     <div class="w-screen h-screen relative ">
       <div class="overflow-hidden">
         <div class="relative">
           <img :src="initData.bg" class="w-full h-screen" />
         </div>
       </div>
-      <div class="absolute top-10vh w-full text-bg-primary z-200 px-10vw flex items-center justify-between">
-        <div>
-          <img src="/image/logo/logo1.png" class="w-20 h-10" />
-        </div>
-        <div>
-          <img src="/image/button/actions.png" class="bg-white w-7 h-7 p-1 rounded-1 cursor-pointer" @click="showModal"
-            v-show="!initData.modalVisible" />
-          <img src="/image/button/unaction.svg" class="bg-white w-7 h-7 p-1 rounded-1 cursor-pointer" @click="showModal"
-            v-show="initData.modalVisible" />
+      <div class="absolute top-10vh w-50 text-bg-primary z-200 px-10vw flex items-center justify-between">
+        <div class="flex items-center justify-center w-30">
+          <img src="/image/logo/logo.svg" class="w-20 h-10" />
+          <p class="" style="font-size: 25px;color:white">Sakura</p>
         </div>
       </div>
       <div class="absolute top-50vh left-15vw text-white w-50vw transform -translate-y-1/2">
@@ -23,7 +19,6 @@
         <div class="my-7 text-5">——{{ initData.head.ty }}:{{ initData.head.from }}</div>
       </div>
     </div>
-
     <template v-if="initData.posts.length > 0">
       <div class="content relative py-10 w-screen sm:px-1/8" :class="$store.state.theme ? 'dark-theme' : 'light-theme'">
         <div class="flex flex-col items-center w-full ">
@@ -38,8 +33,15 @@
               <div class="time my-3 opacity-60 text-2">{{ item.createdAt.split('T')[0] }}</div>
               <div class="title my-3 text-6 cursor-pointer hover:underline" @click="toPost(item._id)">{{ item.title }}
               </div>
-              <div class="content my-3 opacity-60">{{ item.sketch }}</div>
-              <div class="action opacity-60">{{ item.views }}</div>
+              <div class="content mb-10 opacity-60">{{ item.sketch }}</div>
+              <div class="action opacity-60 flex  items-center">
+                <span class="iconfont icon-yanjing mx-1"></span>
+                <p class="mr-5" style="font-size: 8px;">{{ item.views }}</p>
+                <span class="iconfont icon-xinxi mx-1"></span>
+                <p class="mr-5" style="font-size: 8px;">{{ item.comments ? item.comments.length : 0 }}</p>
+                <span class="iconfont icon-aixin"></span>
+                <p class="mr-5" style="font-size: 8px;">{{ item.likes }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -52,22 +54,23 @@
       <div class="py-30vh text-center">主人太懒了，还没发表任何文章！！</div>
     </template>
     <Actions/>
-    <modal :visible="initData.modalVisible" />
+    <Modal />
     <div id="rocket" class="z-100 pointer-events-none" >
       <img src="/image/rocket.svg" class="w-full h-full" style="pointer-events: none;">
     </div>
-
   </div>
 </template>
 
 <script>
 import Actions from '@/components/Actions.vue';
 import Modal from '@/components/Modal.vue';
+import Loading from '@/components/Loading.vue';
 export default ({
   name: 'index',
   components: {
     Actions,
-    Modal
+    Modal,
+    Loading
   },
   data() {
     return {
@@ -78,12 +81,14 @@ export default ({
         currentTime: '',
         bg: '',
         posts: [],
-        modalVisible: false,
-      }
+      },
+      isLoading:true
     }
   },
   head() {
-
+    return {
+      title:'Sakura'
+    }
   },
   mounted() {
     this.getInitData();
@@ -91,6 +96,10 @@ export default ({
       this.$store.commit('setMobile')
     };
     this.fly();
+    this.isLoading = false
+  },
+  activated() {
+    this.getPosts();
   },
   methods: {
     async getInitData() {
@@ -98,17 +107,11 @@ export default ({
       setInterval(() => {
         this.initData.currentTime = new Date().toLocaleString()
       }, 1000);
-      let randomInt = Math.floor(Math.random() * 11) + 1;
+      let randomInt = Math.floor(Math.random() * 7) + 1;
       this.initData.bg = `/image/bg/${randomInt}.jpg`;
 
 
-      try {
-        const result = await this.$axios.$post('http://localhost:3000/getAll');
-        this.initData.posts = result.data
-        console.log(this.initData.posts)
-
-
-
+      try {        
         const data = await this.$axios.$get(
           'https://v1.hitokoto.cn?c=a&c=c&c=h&c=i'
         );
@@ -124,11 +127,17 @@ export default ({
           this.initData.head.ty = '诗词';
         };
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     },
-    showModal() {
-      this.initData.modalVisible = !this.initData.modalVisible;
+    async getPosts () {
+      try {
+        const result = await this.$axios.$post('/getAll');
+        this.initData.posts = result.data;
+        console.log(this.initData.posts);
+      }catch (err) {
+        console.log(err);
+      }
     },
     //小火箭飞飞飞！！！！！！！！！！
     fly() {

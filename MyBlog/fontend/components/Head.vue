@@ -72,7 +72,7 @@ export default {
         async getPost() {
             try {
                 const params = this.$route.params
-                const result = await this.$axios.$post('http://localhost:3000/getOne', { _id: params.id });
+                const result = await this.$axios.$post('/getOne', { _id: params.id });
                 this.post = result.data
             } catch (error) {
                 console.error(error);
@@ -204,8 +204,8 @@ export default {
             try {
                 const params = this.$route.params
                 const isLiked = this.isLiked
-                await this.$axios.$post('http://localhost:3000/likePost', { _id: params.id, isLiked: isLiked });
-                const result = await this.$axios.$post('http://localhost:3000/getOne', { _id: params.id });
+                await this.$axios.$post('/likePost', { _id: params.id, isLiked: isLiked });
+                const result = await this.$axios.$post('/getOne', { _id: params.id });
                 // this.post = result.data
                 console.log(result.data)
                 this.$store.commit('setPosts', result.data)
@@ -262,7 +262,6 @@ export default {
 audio {
     width: 350px;
     height: 35px;
-    background-color: #f1f1f1;
 }
 
 .myhead img {

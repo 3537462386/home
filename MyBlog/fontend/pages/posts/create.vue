@@ -61,7 +61,7 @@ const handleFileSelect = (event) =>{
 }
 const submitForm = async () => {
   try {
-    const result = await axios.post('http://localhost:3000/addPost',{
+    const result = await axios.post('http://8.137.16.32:3000/addPost',{
       title: state.Form.title,
       content: state.Form.content,
       sketch: state.Form.sketch,

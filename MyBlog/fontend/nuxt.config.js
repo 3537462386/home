@@ -12,7 +12,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/image/logo/logo.svg' }
     ],
     script: [
       { src: 'https://cdn.bootcdn.net/ajax/libs/device.js/0.1.59/device.js'}
@@ -25,7 +25,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/element-ui', ssr: true }
+    { src: '~/plugins/element-ui', ssr: true },
+    { src: '~/plugins/sessionStorage.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -40,7 +41,7 @@ export default {
     '@unocss/nuxt','@nuxtjs/axios','@nuxtjs/composition-api/module',
   ],
   axios: {
-    
+    baseURL: 'http://8.137.16.32:3000',
   },
   server: {
     port: 8000,

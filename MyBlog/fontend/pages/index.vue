@@ -168,6 +168,7 @@ export default ({
     toPost(id) {
       this.$router.push(`/posts/${id}`);
     }
+    
   }
 })
 </script>

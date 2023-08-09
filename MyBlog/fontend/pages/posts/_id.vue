@@ -112,8 +112,7 @@ export default ({
         // this.post = posts.data
         this.$store.commit('setPosts', posts.data)
       }
-
-    }
+    }   
   }
 })
 </script>

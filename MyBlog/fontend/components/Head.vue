@@ -44,15 +44,12 @@ export default {
             lrcData: [],
             randomIndex: 0,
             randomSong: '',
-            isLiked: 'unlike',
+            isLiked: false,
             post: []
         }
     },
     mounted() {
-        var value = localStorage.getItem('isLiked');
-        if (value) {
-            this.isLiked = value
-        }
+        this.isLike()
         // this.getPost()
         // 头栏和脚栏出现事件监听
         this.lastScrollPosition = window.scrollY
@@ -61,8 +58,7 @@ export default {
         this.getRandomSong()
         this.getSong()
         //监听歌曲
-        document.querySelector('audio').addEventListener('timeupdate',
-            this.setOffset);
+        document.querySelector('audio').addEventListener('timeupdate',this.setOffset);
 
     },
     beforeDestroy() {
@@ -187,32 +183,33 @@ export default {
             this.$store.commit('setTheme')
         },
         async likePost() {
-
-            var value = localStorage.getItem('isLiked');
-            if (value) {
-                if (value === 'like') {
-                    localStorage.setItem('isLiked', 'unlike');
-                    this.isLiked = 'unlike'
-                } else {
-                    localStorage.setItem('isLiked', 'like');
-                    this.isLiked = 'like'
-                }
+            this.isLiked = !this.isLiked;
+            const likes = JSON.parse(localStorage.getItem('likePosts'));
+            if (likes) {
+                if(this.isLiked){
+                    likes.push(this.$store.state.posts._id);
+                    localStorage.setItem('likePosts', JSON.stringify(likes));
+                }else {
+                    likes.filter((i)=> i !=this.$store.state.posts._id);
+                    localStorage.setItem('likePosts', JSON.stringify(likes));
+                }               
             } else {
-                localStorage.setItem('isLiked', 'like');
-                this.isLiked = 'like'
+                let likes = [];
+                posts.push(this.$store.state.posts._id);
+                localStorage.setItem('likePosts', JSON.stringify(likes));
             }
             try {
-                const params = this.$route.params
-                const isLiked = this.isLiked
-                await this.$axios.$post('/likePost', { _id: params.id, isLiked: isLiked });
+                await this.$axios.$post('/likePost', { _id: this.$store.state.posts._id, isLiked: this.isLiked });
                 const result = await this.$axios.$post('/getOne', { _id: params.id });
-                // this.post = result.data
-                console.log(result.data)
-                this.$store.commit('setPosts', result.data)
+                console.log(result);
+                this.$store.commit('setPosts', result.data);
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
-
+        },
+        isLike() {         
+            let likes = JSON.parse(localStorage.getItem('likePosts'));
+            this.isLiked = likes.includes(this.$store.state.posts._id);
         }
     }
 }

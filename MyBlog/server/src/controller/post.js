@@ -121,14 +121,14 @@ const likePost  = async (ctx, next) => {
 
   try {
     let {_id , isLiked } = ctx.request.body
-    if( isLiked === 'unlike'){
-      await Post_col.updateOne({ _id: _id }, { $inc: { likes: -1 }})
-    }else{
+    if(isLiked){
       await Post_col.updateOne({ _id: _id }, { $inc: { likes: 1 }})
+    }else{
+      await Post_col.updateOne({ _id: _id }, { $inc: { likes: -1 }})
     }
-    console.error(ctx.request.body);
+    console.log(ctx.request.body);
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 }
 

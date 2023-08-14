@@ -61,19 +61,20 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup >
+import { GetPosts } from '@/api'
+import { IndexInitData } from '@/types/index'
 useHead({
   title: '登录'
-})
+});
 
 const state = reactive({
-  initData: {
-    head: {
-      ty: '',
-    },
+  initData :{
+    headContent:[],
+    headTile:'',
     currentTime: '',
-    bg: '',
-    posts: [],
+    bgImg: '',
+    posts:[],
   },
   isLoading: true
 });
@@ -92,34 +93,38 @@ const getInitData = async () => {
     state.initData.currentTime = new Date().toLocaleString()
   }, 1000);
   let randomInt = Math.floor(Math.random() * 7) + 1;
-  state.initData.bg = `/image/bg/${randomInt}.jpg`;
+  state.initData.bgImg = `/image/bg/${randomInt}.jpg`;
   try {
     const data = await axios.get(
       'https://v1.hitokoto.cn?c=a&c=c&c=h&c=i'
     );
     console.log(data);
-    state.initData.head = data;
+    state.initData.headContent = data;
     if (data.type === 'a') {
-      state.initData.head.ty = '动画';
+      state.initData.headTile = '动画';
     } else if (data.type === 'c') {
-      state.initData.head.ty = '游戏';
+      state.initData.headTile = '游戏';
     } else if (data.type === 'h') {
-      state.initData.head.ty = '电影';
+      state.initData.headTile = '电影';
     } else {
-      state.initData.head.ty = '诗词';
+      state.initData.headTile = '诗词';
     };
   } catch (e) {
     console.log(e);
   }
 }
+
 const getPosts = async () => {
-  try {
-    const result = await axios.post('/getAll');
-    state.initData.posts = result.data;
-    console.log(state.initData.posts);
-  } catch (err) {
-    console.log(err);
-  }
+  const data =  GetPosts()
+  state.initData.posts = data;
+  console.log(state.initData.posts);
+  // try {
+  //   const result = await axios.post('/getAll');
+  //   state.initData.posts = result.data;
+  //   console.log(state.initData.posts);
+  // } catch (err) {
+  //   console.log(err);
+  // }
 }
 
 const fly = () => {

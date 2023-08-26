@@ -24,14 +24,14 @@
       <div class="content relative py-10 w-screen sm:px-1/8" :class="indexState.theme ? 'dark-theme' : 'light-theme'">
         <div class="flex flex-col items-center w-full ">
           <div
-            class="box w-full  my-7vh flex flex-col items-center border-1 rounded-2 border-gray-200 border-solid md:border-none md:even:flex-row-reverse md:flex-row "
+            class="box w-full lg:h-60vh md:40vh 65vh my-7vh flex flex-col justify-center items-center border-1 rounded-2 border-gray-200 border-solid md:border-none md:even:flex-row-reverse md:flex-row "
             v-for="item in state.initData.posts" :key="item._id">
-            <div class="imgbox md:w-3/5 ">
-              <img :src="item.imgs" class="w-full  max-h-200 rounded-2 hover:opacity-75 cursor-pointer"
+            <div class="imgbox md:w-3/5 w-full h-full">
+              <img :src="item.imgs" class="w-full h-full rounded-2 object-fill hover:opacity-75 cursor-pointer"
                 @click="toPost(item._id)">
             </div>
             <div
-              class="textbox lg:h-50vh min-h-65 flex flex-col justify-center px-10 md:w-2/5  md:border-1 md:border-gray-200 md:border-solid rounded-2">
+              class="textbox  flex flex-col justify-center  p-10 md:h-9/10 md:w-2/5  md:border-1 md:border-gray-200 md:border-solid rounded-2">
               <div class="time my-3 opacity-60 text-2">{{ item.createdAt.split('T')[0] }}</div>
               <div class="title my-3 text-6 cursor-pointer hover:underline" @click="toPost(item._id)">{{ item.title }}
               </div>
@@ -124,7 +124,6 @@ const getInitData = async () => {
   }
   try {
     const {data} = await axios.get('https://v1.hitokoto.cn?c=a&c=c&c=h&c=i');
-    // const data = await useFetch("https://v1.hitokoto.cn?c=a&c=c&c=h&c=i");
     console.log(data);
     state.initData.headContent = data;
     if (data.type === 'a') {

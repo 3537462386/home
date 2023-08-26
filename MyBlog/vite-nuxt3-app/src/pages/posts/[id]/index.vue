@@ -82,11 +82,12 @@ const getPost = async () => {
   }
 }
 const submitComment = async () => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (state.comment.name === '') {
     state.inputtext = '您的名字是第一印象哦～';
     state.isRed = true;
     return;
-  } else if (state.comment.email === '') {
+  } else if (!emailPattern.test(state.comment.email)) {
     state.inputtext = '请输入正确的邮箱，期待回信～';
     state.isRed = true;
     return;
@@ -95,15 +96,12 @@ const submitComment = async () => {
     state.isRed = true;
     return;
   } else {
+    state.isRed = false;
+    state.inputtext = '~认真和用心是一种态度, 感谢支持~';
     const params = route.params
     const result = await axios.post('http://8.137.16.32:3000/addComment', state.comment);
-    const posts = await axios.post('http://8.137.16.32:3000/addViews', { _id: params.id });
     const comment = await axios.post('http://8.137.16.32:3000/getCommentByPost', { _id: params.id });
     state.comments = comment.data.data
-    // console.log(posts)
-    // this.post = posts.data
-    // indexState.setPost(posts.data.data)
-    state.post = result.data.data;
   }
 }
 

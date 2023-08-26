@@ -1,15 +1,15 @@
 <template>
     <div>
-        <div class="w-full myhead z-200 px-5 flex justify-between items-center cursor-pointer" :class="{
+        <div class="w-full myhead z-200 px-5 flex justify-between items-center " :class="{
             'dark-theme': indexState.theme,
             'light-theme': !indexState.theme,
             'show': state.showButton
         }">
-            <img src="@/assets/image/logo/logo.svg" @click="ToHome">
+            <img src="@/assets/image/logo/logo.svg" @click="ToHome" class="cursor-pointer">
             <audio :src="state.randomSong" controls></audio>
-            <img src="@/assets/image/actions/about.svg" @click="TOAbout">
+            <img src="@/assets/image/actions/about.svg" @click="TOAbout" class="cursor-pointer">
         </div>
-        <div class="w-full myfoot z-200 px-5 flex justify-around items-center cursor-pointer" :class="{
+        <div class="w-full myfoot z-200 px-5 flex justify-around items-center" :class="{
             'dark-theme': indexState.theme,
             'light-theme': !indexState.theme,
             'show': !state.showButton
@@ -20,7 +20,7 @@
                     <li></li>
                 </ul>
             </div>
-            <div class="button flex justify-center items-center">
+            <div class="button flex justify-center items-center cursor-pointer">
                 <span class="iconfont icon-yanjing"></span>
                 <p>{{ state.post.views }}</p>
                 <span class="iconfont icon-xinxi"></span>

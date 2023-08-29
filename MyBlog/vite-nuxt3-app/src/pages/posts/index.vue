@@ -1,5 +1,5 @@
 <template>
-    <div class="container w-screen flex flex-col items-center my-10vh md:mx-10vw">
+    <div class="container w-screen flex flex-col items-center justify-center my-10vh px-6">
         <div class="w-full myhead z-200 px-5 flex justify-between items-center cursor-pointer" :class="{
             'dark-theme': indexState.theme,
             'light-theme': !indexState.theme,
@@ -11,7 +11,7 @@
         </div>
         <el-timeline w-full h-full>
             <el-timeline-item :timestamp="item.createdAt.split('T')[0]" placement="top" size="large" v-for="item in state.post"
-                :key="item._id" color="blue" el-icon-document icon="el-icon-document">
+                :key="item._id" color="pink" el-icon-document icon="el-icon-document">
                 <el-card>
                     <div class="flex  items-center">
                         <img :src="item.imgs" class="w-13 h-11 rounded cursor-pointer" @click="toPost(item._id)">
@@ -20,7 +20,6 @@
                             <div class="opacity-50" style="color: rgb(31, 86, 159);">{{ `${item.likes} Like / ${item.views}
                                 Read` }}</div>
                         </div>
-
                     </div>
                 </el-card>
             </el-timeline-item>

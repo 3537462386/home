@@ -1,10 +1,9 @@
 import { defineStore } from 'pinia'
-import { Post } from '@/types/index'
 
 type indexState = {
   theme: boolean;
   isMobile: boolean;
-  likePosts: Post[];
+  likePosts: [];
 };
 
 
@@ -23,8 +22,8 @@ export const useIndexState = defineStore('index', {
     ToMobile(){
       this.isMobile = !this.isMobile;
     },
-    setLikePost( post:Post[]){
-      this.likePosts = post
+    setLikePost( likes:any){
+      this.likePosts = likes
     }
   },
   persist: process.client && {

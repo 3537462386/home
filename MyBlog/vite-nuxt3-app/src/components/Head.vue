@@ -26,7 +26,7 @@
                 <span class="iconfont icon-xinxi"></span>
                 <p>{{ state.post.comments ? state.post.comments.length : '0' }}</p>
                 <span class="iconfont icon-aixin" v-show="!state.isLiked" @click="likePost"></span>
-                <span class="iconfont icon-aixin1" style="color: red;" v-show="state.isLiked" @click="likePost"></span>
+                <span class="iconfont icon-aixin1" style="color: rgb(230, 96, 96);" v-show="state.isLiked" @click="likePost"></span>
                 <p>{{ state.post.likes }}</p>
                 <span class="iconfont icon-taiyangtianqi" v-show="!indexState.theme" @click="changeTheme"></span>
                 <span class="iconfont icon-yueguang" v-show="indexState.theme" @click="changeTheme"></span>
@@ -54,7 +54,6 @@ const state = reactive({
 })
 
 onMounted(() => {
-    isLike()
     getPost()
     // 头栏和脚栏出现事件监听
     state.lastScrollPosition = window.scrollY
@@ -76,6 +75,7 @@ const getPost = async () => {
         const params = route.params
         const result = await axios.post('http://8.137.16.32:3000/getOne', { _id: params.id });
         state.post = result.data.data
+        state.isLiked = isLike(result.data.data._id)
     } catch (error) {
         console.error(error);
     }
@@ -182,10 +182,11 @@ const likePost = async () => {
     if (likes) {
         if (state.isLiked) {
             likes.push(state.post._id);
-            indexState.setLikePost(likes)
+            indexState.setLikePost(likes);
+            state.post.likes++;
         } else {
-            likes.filter((i) => i != state.post._id);
-            indexState.setLikePost(likes)
+            indexState.setLikePost(likes.filter((i) => i != state.post._id));
+            state.post.likes--;
         }
     } else {
         let likes = [];
@@ -201,9 +202,9 @@ const likePost = async () => {
     }
 }
 
-const isLike = () => {
+const isLike = (postId) => {
     let likes = indexState.likePosts;
-    state.isLiked = likes.includes(state.post._id);
+    return likes.includes(postId);
 }
 
 

@@ -41,7 +41,8 @@
                 <p class="mr-5" style="font-size: 8px;">{{ item.views }}</p>
                 <span class="iconfont icon-xinxi mx-1"></span>
                 <p class="mr-5" style="font-size: 8px;">{{ item.comments ? item.comments.length : 0 }}</p>
-                <span class="iconfont icon-aixin"></span>
+                <span class="iconfont icon-aixin" v-if="!isLike(item._id)"></span>
+                <span class="iconfont icon-aixin1 text-red-500" v-if="isLike(item._id)"></span>
                 <p class="mr-5" style="font-size: 8px;">{{ item.likes }}</p>
               </div>
             </div>
@@ -115,7 +116,7 @@ const getInitData = async () => {
   setInterval(() => {
     state.initData.currentTime = new Date().toLocaleString()
   }, 1000);
-  let randomInt = Math.floor(Math.random() * 5) + 1;
+  let randomInt = Math.floor(Math.random() * 5);
   // state.initData.bgImg = `../assets/image/bg/${randomInt}.jpg`;
   if(indexState.isMobile){
     state.initData.bgImg = PHImage[randomInt];
@@ -178,6 +179,10 @@ const fly = () => {
 }
 const toPost = (id) => {
   router.push(`/posts/${id}`);
+}
+const isLike = (postId) => {
+    let likes = indexState.likePosts;
+    return likes.includes(postId);
 }
 </script>
 <style scoped>

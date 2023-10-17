@@ -32,6 +32,7 @@
     "axios": "^1.4.0",
     "echarts": "^5.4.3",
     "element-plus": "^2.3.9",
+    "less": "^4.2.0",
     "pinia": "^2.0.26",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.1"

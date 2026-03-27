@@ -3,14 +3,17 @@ import prettierConfig from 'eslint-config-prettier'
 import prettierPlugin from 'eslint-plugin-prettier'
 
 export default withNuxt(
-  // 你的自定义规则
   {
     plugins: {
-      prettier: prettierPlugin,
+      prettier: prettierPlugin
     },
     rules: {
-      'prettier/prettier': 'error', // 违反 Prettier 规则时报错
-    },
+      // Prettier 作为 ESLint 规则运行，格式问题统一报错
+      'prettier/prettier': 'error',
+      // Vue SFC 块顺序：script → template → style
+      'vue/block-order': ['error', { order: ['script', 'template', 'style'] }]
+    }
   },
-  prettierConfig, // 放在最后，确保禁用所有与 Prettier 冲突的 ESLint 规则
+  // 关闭所有与 Prettier 冲突的 ESLint / @stylistic 规则，必须放最后
+  prettierConfig
 )
